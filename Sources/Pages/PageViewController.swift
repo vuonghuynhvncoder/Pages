@@ -77,7 +77,7 @@ struct PageViewController: UIViewControllerRepresentable {
         pageViewController.setViewControllers(
             [controllers[currentPage]],
             direction: direction,
-            animated: true
+            animated: false
         )
         onPageChange()
     }
