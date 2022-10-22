@@ -36,7 +36,9 @@ struct PageViewController: UIViewControllerRepresentable {
     var transitionStyle: UIPageViewController.TransitionStyle
     var bounce: Bool
     var wrap: Bool
+    var disable: Bool
     var controllers: [UIViewController]
+    var onPageChanged: ((Int) -> Void)?
 
     func makeCoordinator() -> PagesCoordinator {
         PagesCoordinator(self)
@@ -47,7 +49,7 @@ struct PageViewController: UIViewControllerRepresentable {
             transitionStyle: self.transitionStyle,
             navigationOrientation: self.navigationOrientation
         )
-        pageViewController.dataSource = context.coordinator
+        pageViewController.dataSource = disable ? nil : context.coordinator
         pageViewController.delegate = context.coordinator
         pageViewController.view.backgroundColor = .clear
 
@@ -70,6 +72,12 @@ struct PageViewController: UIViewControllerRepresentable {
             direction: currentPage - previousPage > 0 ? .forward : .reverse,
             animated: true
         )
+    }
+    
+    fileprivate func onPageChange() {
+        if let onPageChanged = onPageChanged {
+            onPageChanged(currentPage)
+        }
     }
 
 }
@@ -113,6 +121,7 @@ class PagesCoordinator: NSObject, UIPageViewControllerDataSource,
         let visibleViewController = pageViewController.viewControllers?.first,
         let index = parent.controllers.firstIndex(of: visibleViewController) {
             parent.currentPage = index
+            parent.onPageChange()
         }
     }
 }

@@ -37,9 +37,11 @@ public struct Pages: View {
     var transitionStyle: UIPageViewController.TransitionStyle
     var bounce: Bool
     var wrap: Bool
+    var disable: Bool
     var hasControl: Bool
     var pageControl: UIPageControl? = nil
     var controlAlignment: Alignment
+    var onPageChanged: ((Int) -> Void)?
 
     /**
     Creates the paging view that generates user-defined static pages.
@@ -76,6 +78,7 @@ public struct Pages: View {
         transitionStyle: UIPageViewController.TransitionStyle = .scroll,
         bounce: Bool = true,
         wrap: Bool = false,
+        diable: Bool = false,
         hasControl: Bool = true,
         control: UIPageControl? = nil,
         controlAlignment: Alignment = .bottom,
@@ -85,6 +88,7 @@ public struct Pages: View {
         self.transitionStyle = transitionStyle
         self.bounce = bounce
         self.wrap = wrap
+        self.disable = diable
         self.hasControl = hasControl
         self.pageControl = control
         self.controlAlignment = controlAlignment
@@ -100,6 +104,7 @@ public struct Pages: View {
                 transitionStyle: transitionStyle,
                 bounce: bounce,
                 wrap: wrap,
+                disable: disable,
                 controllers: pages.map {
                     let h = UIHostingController(rootView: $0)
                     h.view.backgroundColor = .clear

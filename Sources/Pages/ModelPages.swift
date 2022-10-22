@@ -38,9 +38,11 @@ public struct ModelPages<Data, Content>: View where Data: RandomAccessCollection
     private var transitionStyle: UIPageViewController.TransitionStyle
     private var bounce: Bool
     private var wrap: Bool
+    private var disable: Bool
     private var hasControl: Bool
     private var pageControl: UIPageControl? = nil
     private var controlAlignment: Alignment
+    var onPageChanged: ((Int) -> Void)?
 
     /**
     Creates the paging view that generates pages dynamically based on some user-defined data.
@@ -83,6 +85,7 @@ public struct ModelPages<Data, Content>: View where Data: RandomAccessCollection
         transitionStyle: UIPageViewController.TransitionStyle = .scroll,
         bounce: Bool = true,
         wrap: Bool = false,
+        disable: Bool = false,
         hasControl: Bool = true,
         control: UIPageControl? = nil,
         controlAlignment: Alignment = .bottom,
@@ -93,6 +96,7 @@ public struct ModelPages<Data, Content>: View where Data: RandomAccessCollection
         self.transitionStyle = transitionStyle
         self.bounce = bounce
         self.wrap = wrap
+        self.disable = disable
         self.hasControl = hasControl
         self.pageControl = control
         self.controlAlignment = controlAlignment
@@ -108,11 +112,13 @@ public struct ModelPages<Data, Content>: View where Data: RandomAccessCollection
                 transitionStyle: transitionStyle,
                 bounce: bounce,
                 wrap: wrap,
+                disable: disable,
                 controllers: (0..<items.count).map { i in
                     let h = UIHostingController(rootView: template(i, items[i]))
                     h.view.backgroundColor = .clear
                     return h
-                }
+                },
+                onPageChanged: onPageChanged
             )
             if self.hasControl {
                 PageControl(

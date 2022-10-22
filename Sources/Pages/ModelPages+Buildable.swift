@@ -1,0 +1,15 @@
+//
+//  File.swift
+//  
+//
+//  Created by OptiSigns on 22/10/2022.
+//
+
+import Foundation
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+extension ModelPages: Buildable {
+    public func onPageChanged(_ callback: ((Int) -> Void)?) -> Self {
+        mutating(keyPath: \.onPageChanged, value: callback)
+    }
+}
