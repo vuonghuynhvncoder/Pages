@@ -12,4 +12,8 @@ extension Pages: Buildable {
     public func onPageChanged(_ callback: ((Int) -> Void)?) -> Self {
         mutating(keyPath: \.onPageChanged, value: callback)
     }
+    
+    public func onScrolled(_ callback: (() -> Void)?) -> Self {
+        mutating(keyPath: \.onScrolled, value: callback)
+    }
 }

@@ -41,7 +41,9 @@ public struct Pages: View {
     var hasControl: Bool
     var pageControl: UIPageControl? = nil
     var controlAlignment: Alignment
+    
     var onPageChanged: ((Int) -> Void)?
+    var onScrolled: (() -> Void)?
 
     /**
     Creates the paging view that generates user-defined static pages.
@@ -105,6 +107,8 @@ public struct Pages: View {
                 bounce: bounce,
                 wrap: wrap,
                 disable: disable,
+                onPageChanged: onPageChanged,
+                onScrolled: onScrolled,
                 controllers: pages.map {
                     let h = UIHostingController(rootView: $0)
                     h.view.backgroundColor = .clear

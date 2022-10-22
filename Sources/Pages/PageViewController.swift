@@ -37,8 +37,9 @@ struct PageViewController: UIViewControllerRepresentable {
     var bounce: Bool
     var wrap: Bool
     var disable: Bool
-    var controllers: [UIViewController]
     var onPageChanged: ((Int) -> Void)?
+    var onScrolled: (() -> Void)?
+    var controllers: [UIViewController]
 
     func makeCoordinator() -> PagesCoordinator {
         PagesCoordinator(self)
@@ -67,16 +68,29 @@ struct PageViewController: UIViewControllerRepresentable {
         let previousPage = context.coordinator.parent.currentPage
         context.coordinator.parent = self
 
+        var direction: UIPageViewController.NavigationDirection
+        if(currentPage == 0 && previousPage == controllers.count - 1) {
+            direction = .forward
+        }else{
+            direction = currentPage - previousPage > 0 ? .forward : .reverse
+        }
         pageViewController.setViewControllers(
             [controllers[currentPage]],
-            direction: currentPage - previousPage > 0 ? .forward : .reverse,
+            direction: direction,
             animated: true
         )
+        onPageChange()
     }
     
-    fileprivate func onPageChange() {
+    private func onPageChange() {
         if let onPageChanged = onPageChanged {
             onPageChanged(currentPage)
+        }
+    }
+    
+    fileprivate func onScroll() {
+        if let onScrolled = onScrolled {
+            onScrolled()
         }
     }
 
@@ -121,7 +135,7 @@ class PagesCoordinator: NSObject, UIPageViewControllerDataSource,
         let visibleViewController = pageViewController.viewControllers?.first,
         let index = parent.controllers.firstIndex(of: visibleViewController) {
             parent.currentPage = index
-            parent.onPageChange()
+            parent.onScroll()
         }
     }
 }
