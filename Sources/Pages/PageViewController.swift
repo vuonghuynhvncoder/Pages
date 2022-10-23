@@ -67,7 +67,8 @@ struct PageViewController: UIViewControllerRepresentable {
     func updateUIViewController(_ pageViewController: UIPageViewController, context: Context) {
         let previousPage = context.coordinator.parent.currentPage
         context.coordinator.parent = self
-
+        debugPrint("PageViewController::updateUIViewController previousPage: \(previousPage), currentPage: \(currentPage)")
+        let animated = (currentPage != previousPage)
         var direction: UIPageViewController.NavigationDirection
         if(currentPage == 0 && previousPage == controllers.count - 1) {
             direction = .forward
@@ -77,7 +78,7 @@ struct PageViewController: UIViewControllerRepresentable {
         pageViewController.setViewControllers(
             [controllers[currentPage]],
             direction: direction,
-            animated: false
+            animated: animated
         )
         onPageChange()
     }
@@ -112,6 +113,10 @@ class PagesCoordinator: NSObject, UIPageViewControllerDataSource,
         guard let index = parent.controllers.firstIndex(of: viewController) else {
             return nil
         }
+        debugPrint("PagesCoordinator::pageViewController1 index: \(index)")
+        if(index == 0 && parent.controllers.count < 2) {
+            return nil
+        }
         return index == 0 ? (self.parent.wrap ? parent.controllers.last : nil) : parent.controllers[index - 1]
     }
 
@@ -120,6 +125,10 @@ class PagesCoordinator: NSObject, UIPageViewControllerDataSource,
         viewControllerAfter viewController: UIViewController
     ) -> UIViewController? {
         guard let index = parent.controllers.firstIndex(of: viewController) else {
+            return nil
+        }
+        debugPrint("PagesCoordinator::pageViewController2 index: \(index)")
+        if (index == parent.controllers.count - 1 && parent.controllers.count < 2) {
             return nil
         }
         return index == parent.controllers.count - 1 ? (self.parent.wrap ? parent.controllers.first : nil) : parent.controllers[index + 1]
@@ -131,6 +140,7 @@ class PagesCoordinator: NSObject, UIPageViewControllerDataSource,
         previousViewControllers: [UIViewController],
         transitionCompleted completed: Bool
     ) {
+        debugPrint("PagesCoordinator::pageViewController3 completed: \(completed)")
         if completed,
         let visibleViewController = pageViewController.viewControllers?.first,
         let index = parent.controllers.firstIndex(of: visibleViewController) {
