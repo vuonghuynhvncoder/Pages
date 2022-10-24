@@ -30,6 +30,7 @@ import UIKit
 @available(iOS 13.0, *)
 public struct Pages: View {
 
+    let id: String
     @Binding var currentPage: Int
     var pages: [AnyView]
 
@@ -75,6 +76,7 @@ public struct Pages: View {
            - pages: A function builder `PagesBuilder` that will put the views defined by the user on a list.
     */
     public init(
+        id: String = "",
         currentPage: Binding<Int>,
         navigationOrientation: UIPageViewController.NavigationOrientation = .horizontal,
         transitionStyle: UIPageViewController.TransitionStyle = .scroll,
@@ -86,6 +88,7 @@ public struct Pages: View {
         controlAlignment: Alignment = .bottom,
         @PagesBuilder pages: () -> [AnyView]
     ) {
+        self.id = id
         self.navigationOrientation = navigationOrientation
         self.transitionStyle = transitionStyle
         self.bounce = bounce
@@ -101,6 +104,7 @@ public struct Pages: View {
     public var body: some View {
         ZStack(alignment: self.controlAlignment) {
             PageViewController(
+                id: id,
                 currentPage: $currentPage,
                 navigationOrientation: navigationOrientation,
                 transitionStyle: transitionStyle,

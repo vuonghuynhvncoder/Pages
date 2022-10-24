@@ -30,6 +30,7 @@ import UIKit
 @available(iOS 13.0, *)
 public struct ModelPages<Data, Content>: View where Data: RandomAccessCollection, Content: View {
 
+    let id: String
     @Binding var currentPage: Int
     var items: [Data.Element]
 
@@ -82,6 +83,7 @@ public struct ModelPages<Data, Content>: View where Data: RandomAccessCollection
     */
     public init(
         _ items: Data,
+        id: String = "",
         currentPage: Binding<Int>,
         navigationOrientation: UIPageViewController.NavigationOrientation = .horizontal,
         transitionStyle: UIPageViewController.TransitionStyle = .scroll,
@@ -93,6 +95,7 @@ public struct ModelPages<Data, Content>: View where Data: RandomAccessCollection
         controlAlignment: Alignment = .bottom,
         template: @escaping (Int, Data.Element) -> Content
     ) {
+        self.id = id
         self._currentPage = currentPage
         self.navigationOrientation = navigationOrientation
         self.transitionStyle = transitionStyle
@@ -109,6 +112,7 @@ public struct ModelPages<Data, Content>: View where Data: RandomAccessCollection
     public var body: some View {
         ZStack(alignment: self.controlAlignment) {
             PageViewController(
+                id: id,
                 currentPage: $currentPage,
                 navigationOrientation: navigationOrientation,
                 transitionStyle: transitionStyle,

@@ -30,6 +30,7 @@ import UIKit
 @available(iOS 13.0, *)
 struct PageViewController: UIViewControllerRepresentable {
 
+    let id: String
     @Binding var currentPage: Int
 
     var navigationOrientation: UIPageViewController.NavigationOrientation
@@ -66,8 +67,10 @@ struct PageViewController: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ pageViewController: UIPageViewController, context: Context) {
+        let previousId = context.coordinator.parent.id
         let previousPage = context.coordinator.parent.currentPage
-        if(previousPage == currentPage && (pageViewController.viewControllers?.first) != nil){
+        if(previousId == id && previousPage == currentPage
+           && (pageViewController.viewControllers?.first) != nil){
             return
         }
         let isScroll = context.coordinator.isScroll
