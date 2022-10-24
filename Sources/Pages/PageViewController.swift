@@ -46,6 +46,7 @@ struct PageViewController: UIViewControllerRepresentable {
     }
 
     func makeUIViewController(context: Context) -> UIPageViewController {
+        debugPrint("PageViewController::makeUIViewController")
         let pageViewController = UIPageViewController(
             transitionStyle: self.transitionStyle,
             navigationOrientation: self.navigationOrientation
@@ -66,6 +67,9 @@ struct PageViewController: UIViewControllerRepresentable {
 
     func updateUIViewController(_ pageViewController: UIPageViewController, context: Context) {
         let previousPage = context.coordinator.parent.currentPage
+        if(previousPage == currentPage && (pageViewController.viewControllers?.first) != nil){
+            return
+        }
         let isScroll = context.coordinator.isScroll
         context.coordinator.parent = self
         context.coordinator.isScroll = false
