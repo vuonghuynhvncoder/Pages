@@ -47,7 +47,7 @@ struct PageViewController: UIViewControllerRepresentable {
     }
 
     func makeUIViewController(context: Context) -> UIPageViewController {
-        debugPrint("PageViewController::makeUIViewController")
+//        debugPrint("PageViewController::makeUIViewController")
         let pageViewController = UIPageViewController(
             transitionStyle: self.transitionStyle,
             navigationOrientation: self.navigationOrientation
@@ -83,7 +83,7 @@ struct PageViewController: UIViewControllerRepresentable {
         }else{
             direction = currentPage - previousPage > 0 ? .forward : .reverse
         }
-        debugPrint("PageViewController::updateUIViewController previousPage: \(previousPage), currentPage: \(currentPage), animated: \(animated), direction: \(direction)")
+//        debugPrint("PageViewController::updateUIViewController previousPage: \(previousPage), currentPage: \(currentPage), animated: \(animated), direction: \(direction)")
         pageViewController.setViewControllers(
             [controllers[currentPage]],
             direction: direction,
@@ -123,7 +123,7 @@ class PagesCoordinator: NSObject, UIPageViewControllerDataSource,
         guard let index = parent.controllers.firstIndex(of: viewController) else {
             return nil
         }
-        debugPrint("PagesCoordinator::pageViewController1 index: \(index)")
+//        debugPrint("PagesCoordinator::pageViewController1 index: \(index)")
         if(index == 0 && parent.controllers.count < 2) {
             return nil
         }
@@ -137,7 +137,7 @@ class PagesCoordinator: NSObject, UIPageViewControllerDataSource,
         guard let index = parent.controllers.firstIndex(of: viewController) else {
             return nil
         }
-        debugPrint("PagesCoordinator::pageViewController2 index: \(index)")
+//        debugPrint("PagesCoordinator::pageViewController2 index: \(index)")
         if (index == parent.controllers.count - 1 && parent.controllers.count < 2) {
             return nil
         }
@@ -150,7 +150,7 @@ class PagesCoordinator: NSObject, UIPageViewControllerDataSource,
         previousViewControllers: [UIViewController],
         transitionCompleted completed: Bool
     ) {
-        debugPrint("PagesCoordinator::pageViewController3 completed: \(completed)")
+//        debugPrint("PagesCoordinator::pageViewController3 completed: \(completed)")
         if completed,
         let visibleViewController = pageViewController.viewControllers?.first,
         let index = parent.controllers.firstIndex(of: visibleViewController) {
@@ -165,15 +165,15 @@ class PagesCoordinator: NSObject, UIPageViewControllerDataSource,
 extension PagesCoordinator: UIScrollViewDelegate {
     
     func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
-        debugPrint("PagesCoordinator::scrollViewWillBeginDecelerating")
+//        debugPrint("PagesCoordinator::scrollViewWillBeginDecelerating")
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        debugPrint("PagesCoordinator::scrollViewWillBeginDragging")
+//        debugPrint("PagesCoordinator::scrollViewWillBeginDragging")
     }
     
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
-        debugPrint("PagesCoordinator::scrollViewWillBeginZooming")
+//        debugPrint("PagesCoordinator::scrollViewWillBeginZooming")
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -187,28 +187,28 @@ extension PagesCoordinator: UIScrollViewDelegate {
     }
     
     func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
-        debugPrint("PagesCoordinator::scrollViewShouldScrollToTop")
+//        debugPrint("PagesCoordinator::scrollViewShouldScrollToTop")
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        debugPrint("PagesCoordinator::scrollViewDidEndDragging")
+//        debugPrint("PagesCoordinator::scrollViewDidEndDragging")
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        debugPrint("PagesCoordinator::scrollViewDidEndScrollingAnimation")
+//        debugPrint("PagesCoordinator::scrollViewDidEndScrollingAnimation")
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        debugPrint("PagesCoordinator::scrollViewDidEndDecelerating")
+//        debugPrint("PagesCoordinator::scrollViewDidEndDecelerating")
     }
 
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        debugPrint("PagesCoordinator::scrollViewWillEndDragging")
+//        debugPrint("PagesCoordinator::scrollViewWillEndDragging")
         scrollViewDidScroll(scrollView)
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        debugPrint("PagesCoordinator::scrollViewDidEndZooming")
+//        debugPrint("PagesCoordinator::scrollViewDidEndZooming")
     }
 
     private func disableHorizontalBounce(_ scrollView: UIScrollView) {
